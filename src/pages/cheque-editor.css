@@ -1,0 +1,213 @@
+.data-loading{min-height:180px;display:grid;place-items:center;align-content:center;gap:10px;color:#71837c;font-size:12px}.editor-page{min-height:calc(100vh - 76px);background:#e9ece8;padding:28px 0 110px}.editor-toolbar{max-width:1100px;margin:0 auto 20px;padding:0 24px;display:flex;align-items:center;gap:26px}.editor-toolbar .back-button{margin:0}.editor-toolbar>div{display:grid}.editor-kicker{font:500 9px 'DM Mono';letter-spacing:.14em;color:#a47d45}.editor-toolbar strong{font:600 18px 'Playfair Display';color:#173633}.editor-setup-layout{display:flex;align-items:flex-start;justify-content:center;gap:22px;width:min(850px,calc(100% - 32px));margin:35px auto}.recent-cheques{width:270px;background:#fff;border:1px solid #dfe7e0;padding:25px 22px;box-shadow:0 16px 45px #17363312}.recent-cheques h2{font:600 23px "Playfair Display";margin:0;color:#173633}.recent-cheques-list{max-height:410px;overflow-y:auto;margin-top:18px;padding-right:5px}.recent-cheques-list button{display:block;width:100%;padding:12px 8px;text-align:left;background:transparent;border-bottom:1px solid #edf1ed;color:#36534d}.recent-cheques-list button:hover{background:#f3f6f2}.recent-cheques-list strong,.recent-cheques-list span{display:block}.recent-cheques-list strong{font:500 12px "DM Mono"}.recent-cheques-list span{font-size:12px;color:#71837c;margin-top:3px}.editor-setup{width:min(470px,calc(100% - 32px));margin:35px auto;background:#fff;padding:38px 42px;border:1px solid #dfe7e0;box-shadow:0 16px 45px #17363312}.editor-setup h1{font:600 34px 'Playfair Display';margin:0;color:#173633}.editor-setup>p:not(.eyebrow){color:#80918c;font-size:14px;margin:8px 0 30px}.editor-setup form{gap:22px}.editor-setup fieldset{border:0;padding:0;margin:0;display:grid;gap:10px}.editor-setup legend{font-size:12px;color:#537069;margin-bottom:8px}.type-option{display:flex;grid-template-columns:none;align-items:center;gap:12px;border:1px solid #dce4de;padding:14px 15px;cursor:pointer}.type-option.selected{border-color:#c89b58;background:#fbf8f1}.type-option input{width:auto;accent-color:#173c37}.type-option span,.type-option b,.type-option small{display:block}.type-option b{color:#173633;font-size:13px}.type-option small{color:#899993;font-size:11px;margin-top:2px}.paper-workspace{overflow-x:auto;padding:6px 24px 35px}.paper-scroll{width:816px;margin:auto}.recent-cheques-list .recent-cheque.selected{background:#e8f0ea;border-left:3px solid #c79a57}.inherit-option{display:flex;grid-template-columns:none;align-items:flex-start;gap:10px;padding:11px 12px;border:1px solid #dce4de;background:#f8faf7;cursor:pointer}.inherit-option input{width:auto;margin-top:2px;accent-color:#173c37}.inherit-option span,.inherit-option b,.inherit-option small{display:block}.inherit-option b{font-size:12px;color:#36534d}.inherit-option small{font-size:10px;color:#899993;margin-top:2px}
+.page-controls{position:fixed;z-index:3;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:#102c2a;color:white;border:1px solid #38534e;border-radius:8px;padding:9px 12px;box-shadow:0 8px 30px #102c2a55}.page-controls button{width:31px;height:31px;border-radius:5px;background:#284641;color:#d6e2dd}.page-controls button:disabled{opacity:.35}.page-controls>div{display:flex;gap:5px}.page-controls>div button.active{background:#d5a45e;color:#173633}.page-controls span{font:500 10px 'DM Mono';white-space:nowrap}@media(max-width:850px){.paper-scroll{margin:0}.editor-toolbar{padding-left:18px}.editor-setup-layout{width:min(470px,calc(100% - 32px));display:block}.recent-cheques{width:100%;margin-bottom:18px}.recent-cheques-list{max-height:220px}.editor-setup{padding:30px 25px}}
+
+/* Carta / Bond. All document measurements are independent of app typography. */
+.reference-toggle{display:flex;justify-content:center;align-items:center;gap:8px;margin:0 auto 18px;font-size:12px;color:#49615c}
+.reference-toggle input{accent-color:#173c37}
+.bond-page{--rule:#444;--blue:#527b99;--green:#558573;position:relative;box-sizing:border-box;flex:none;width:816px;min-width:816px;height:1056px;padding:0;background:#fff;color:#222;box-shadow:0 12px 38px #17363324;font:11px/1.3 Arial,sans-serif;overflow:hidden;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.bond-page *{box-sizing:border-box}
+.bond-page p,.bond-page h1,.bond-page h2,.bond-page h3{margin:0}
+.bond-page b,.bond-page strong{font-weight:700}
+.bond-page table{border-collapse:collapse;table-layout:fixed;width:100%;font:inherit;color:inherit}
+.bond-page th,.bond-page td{padding:0;color:inherit;font:inherit;letter-spacing:normal;vertical-align:top;border:0}
+.bond-page th{text-align:center;font-weight:700}
+.bond-page .blue-value{color:var(--blue)}
+.bond-page .green-value{color:var(--green)}
+.sheet-fill{display:block;min-height:1px;border-bottom:1px solid #555}
+.sheet-logos{position:absolute;display:flex;justify-content:space-between;align-items:flex-start}
+.sheet-logos img{object-fit:contain;display:block}
+.sheet-logos img:first-child{width:315px;height:auto}
+.sheet-logos img:last-child{width:74px;height:74px}
+/* 1. Cheque, comprobante and signatures. */
+.cheque-frame{position:absolute;left:52px;top:86px;width:712px;border:1.4px solid var(--rule)}
+.bank-block{height:250px;position:relative;background:#e2f0f3;border-bottom:1.4px solid var(--rule)}
+.bank-block h1{text-align:center;font:700 15px/19px Arial,sans-serif;padding-top:2px}
+.bank-block .sheet-logos{left:42px;right:122px;top:17px}
+.bank-block .sheet-logos img:first-child{width:266px;height:auto}
+.bank-block .sheet-logos img:last-child{width:73px;height:73px}
+.bank-number{position:absolute;top:9px;right:73px;font:700 9px 'Times New Roman',serif}
+.bank-date{position:absolute;left:2px;right:3px;top:79px;display:grid;grid-template-columns:265px 1fr;font-size:10.8px}
+.bank-payee,.bank-words{position:absolute;left:2px;right:145px;display:flex;align-items:baseline;white-space:nowrap;font-size:10.6px}
+.bank-payee{top:112px}.bank-words{top:132px;right:215px}
+.dot-leader{flex:1;min-width:16px;border-bottom:2px dotted #333;margin:0 2px}
+.bank-address{position:absolute;left:2px;top:160px}
+.bank-funds{position:absolute;left:2px;top:196px}
+.bank-city{position:absolute;left:2px;top:224px}
+.bank-sign{position:absolute;bottom:0;text-align:center;font-size:10.8px;line-height:14px}
+.bank-sign .sheet-fill{margin-bottom:2px}
+.bank-admin{left:137px;width:194px}.bank-director{right:86px;width:192px}
+.voucher-info{position:relative;height:154px}
+.voucher-info h2{text-align:center;font:700 13.5px/17px Arial,sans-serif;letter-spacing:.35px;padding-top:3px}
+.voucher-identifiers{position:absolute;top:53px;left:3px;display:flex;gap:64px;font-size:11px}
+.voucher-unit{position:absolute;top:83px;left:26px;font-size:11px;white-space:nowrap}
+.voucher-unit span{margin-left:22px}
+.voucher-account{position:absolute;top:113px;left:19px}
+.bond-page .voucher-ledger{border-top:1.4px solid var(--rule);font-size:11.5px}
+.bond-page .voucher-ledger th,.bond-page .voucher-ledger td{border-right:1.4px solid var(--rule);padding:2px}
+.bond-page .voucher-ledger th:last-child,.bond-page .voucher-ledger td:last-child{border-right:0}
+.bond-page .voucher-ledger thead{height:29px;background:#d8edf3;border-bottom:1.4px solid var(--rule)}
+.bond-page .voucher-ledger th{vertical-align:middle;white-space:nowrap;font-size:10.5px}
+.bond-page .voucher-ledger tbody{height:274px}.bond-page .voucher-ledger tbody .expense-row{height:14px}.bond-page .voucher-ledger tbody .expense-spacer{height:auto}
+.bond-page .voucher-ledger tbody td{line-height:15px}
+.bond-page .voucher-ledger tbody td:first-child{text-align:center}
+.bond-page .voucher-ledger tbody td:nth-child(2){position:relative}
+.bond-page .voucher-ledger td:last-child{text-align:right}
+.voucher-purpose{font-size:11.4px;font-weight:bold;text-align:justify;line-height:14.7px;margin-top:12px!important}
+.voucher-approval{position:absolute;left:2px;bottom:31px;line-height:15px}
+.voucher-approval .sheet-fill{width:170px;margin:0 0 5px 18px}
+.bond-page .voucher-ledger tfoot{height:27px;background:#d8edf3;border-top:1.4px solid var(--rule)}
+.bond-page .voucher-ledger tfoot td{vertical-align:middle;text-align:center}
+.cheque-receiver{position:absolute;left:52px;top:899px;width:171px;font-size:10.8px;line-height:17px}
+.cheque-receiver p{margin-top:16px;white-space:nowrap;font-size:10px}
+.cheque-responsible{position:absolute;left:415px;top:899px;width:209px;text-align:center;font-size:10.8px;line-height:16px}
+/* 2. Recibo: Arial body and Times New Roman telephone line. */
+.specimen-two .sheet-logos{top:60px;left:99px;right:77px}
+.specimen-two .sheet-logos img:first-child{width:315px;height:auto}
+.specimen-two .sheet-logos img:last-child{width:80px;height:80px}
+.receipt-institution{position:absolute;top:166px;left:155px;width:525px;text-align:center;font:700 14px/16px Arial,sans-serif}
+.receipt-institution span{font:700 16px/20px 'Times New Roman',serif}
+.receipt-value{position:absolute;top:305px;left:98px;font-size:13.5px}
+.receipt-ack{position:absolute;top:369px;left:97px;right:61px;font-size:13.3px;white-space:nowrap}
+.receipt-ack>div{margin-top:8px}
+.receipt-for{position:absolute;top:442px;left:97px;font-size:13.5px}
+.receipt-purpose{position:absolute;top:493px;left:96px;right:61px;font:700 13.3px/17.5px Arial,sans-serif;text-align:justify}
+.receipt-identifiers{position:absolute;top:641px;left:96px;display:flex;gap:77px;font-size:13.5px}
+.receipt-place{position:absolute;top:710px;left:96px;font-size:13.5px}
+.receipt-sign{position:absolute;top:809px;left:360px;width:254px;text-align:center;font:14px/18px Arial,sans-serif}
+.receipt-sign span:last-child{display:block;text-align:right;padding-right:7px}
+/* 3. Viaticos: form grid, muted blue values, green rate and gray bars. */
+.specimen-three{font-size:8.8px;--rule:#879c9f}
+.specimen-three .sheet-logos{top:47px;left:92px;right:93px}
+.specimen-three .sheet-logos img:first-child{width:237px;height:auto}
+.specimen-three .sheet-logos img:last-child{width:63px;height:63px}
+.travel-institution{position:absolute;top:110px;left:93px;width:454px;display:grid;grid-template-columns:176px 1fr;grid-auto-rows:14px;font-size:8.5px}
+.travel-institution span{font-family:'Times New Roman',serif;font-weight:bold}
+.travel-institution .sheet-fill{border-color:#a6b1b2}
+.travel-identifiers{position:absolute;top:109px;left:591px;width:121px;display:grid;grid-template-columns:68px 1fr;grid-auto-rows:15px;font-size:8.7px;text-align:right}
+.travel-identifiers span{color:var(--blue);font-weight:bold}
+.side-label{position:absolute;left:0;top:0;bottom:0;width:19px;background:#707f81;color:white;writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;padding:4px 2px;font-size:9px}
+.travel-personal{position:absolute;top:190px;left:70px;right:70px;height:86px;border-top:1px solid #6f7e80}
+.person-fields{position:absolute;left:120px;top:15px;width:354px;display:grid;grid-template-columns:79px 1fr;grid-auto-rows:14px}
+.person-fields>b{text-align:right;padding-right:4px;font-size:9px}
+.person-fields .sheet-fill{color:#6d8d9b;border-color:#b0b8b9}
+.person-category{display:grid;grid-template-columns:80px 94px 1fr;text-align:center}
+.person-address{position:absolute;right:8px;top:15px;display:grid;grid-template-columns:72px 96px;grid-auto-rows:14px;font-size:8.7px}
+.person-address b{text-align:right;padding-right:4px}.person-address span{color:#6d8d9b}
+.travel-instructions{position:absolute;top:281px;left:70px;right:68px;font:7px/11px 'Times New Roman',serif}
+.travel-journey{position:absolute;top:307px;left:70px;right:66px;height:169px}
+.journey-purpose{position:absolute;left:19px;top:0;right:0;height:63px;border:1px solid #748c91;display:grid;grid-template-columns:178px 1fr}
+.journey-purpose>b{display:flex;justify-content:flex-end;align-items:center;padding:3px;font-size:9px;border-right:1px solid #748c91}
+.journey-purpose p{font:italic 9px/12.5px 'Times New Roman',serif;color:#5f8296;padding:5px 2px;text-align:justify}
+.journey-dates{position:absolute;top:65px;left:109px;display:grid;grid-template-columns:91px 116px;grid-auto-rows:14px;font-size:9.5px}
+.journey-dates>b{text-align:right;padding-right:4px;white-space:nowrap}.journey-dates>span{font-family:'Times New Roman',serif;font-style:italic;color:#5f8296}
+.journey-dates strong{font-weight:bold;color:#65778b}.journey-dates .green-value{color:var(--green)}
+.journey-vehicle{position:absolute;top:65px;right:0;display:grid;grid-template-columns:169px 108px;grid-auto-rows:15px;font-size:8.5px}
+.journey-vehicle>b,.journey-vehicle>i{text-align:right;padding-right:4px}
+.journey-vehicle i{font-size:7.5px}
+.journey-vehicle>span{color:#5f8296}
+.date-picker-field{position:relative;display:block;color:#5f8296;font-family:'Times New Roman',serif;font-style:italic;text-align:left;cursor:pointer}
+.itinerary-table .date-picker-field{height:100%;position:relative;top:-1px;font-size:8.8px;line-height:1;text-align:center;white-space:nowrap;display:flex;align-items:center;justify-content:center}.itinerary-table .date-cell:focus-within{background:#f0f2ef}
+.date-picker-field>input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.vehicle-type-input,.vehicle-input{width:100%;height:15px;padding:0;border:0;border-bottom:0;background:transparent;color:#5f8296;font:inherit;font-style:italic;outline:0}
+.vehicle-type-input{cursor:pointer;text-align:left}
+.vehicle-input{text-transform:uppercase}
+.vehicle-type-input:focus,.vehicle-input:focus{background:#fff8df;box-shadow:0 0 0 1px #c89b58 inset}
+.journey-rates{position:absolute;bottom:0;left:56px;display:grid;grid-template-columns:134px repeat(3,77px);grid-template-rows:14px 16px;text-align:center;font-size:8px}
+.journey-rates>div{text-align:right;padding-right:22px}
+.journey-rates>span{font-size:7.2px;align-self:center;white-space:nowrap}
+.journey-rates strong{border-top:1px solid #5d727b;font-size:9.5px}
+.bond-page .itinerary-table{position:absolute;top:482px;left:62px;width:691px;border:1px solid var(--rule);font-size:8.8px}
+.bond-page .itinerary-table th,.bond-page .itinerary-table td{border:1px solid var(--rule);padding:0 2px;text-align:center;vertical-align:middle;height:9px;line-height:9px}
+.bond-page .itinerary-table thead th{height:16px;line-height:13px}
+.bond-page .itinerary-table tbody tr:first-child td{height:16px;line-height:14px}
+.bond-page .itinerary-table td:nth-last-child(-n+2){white-space:pre;text-align:right}
+.bond-page .itinerary-table tfoot td{height:16px;line-height:14px;font-weight:bold}
+.bond-page .itinerary-table tfoot td:first-child{text-align:left}
+.itinerary-number-cell{position:relative}
+.itinerary-row-remove{position:absolute;z-index:4;left:-20px;top:50%;width:16px;height:16px;padding:0;transform:translateY(-50%);border:0;border-radius:50%;background:#a34b47;color:#fff;font-size:14px;line-height:14px;opacity:0;cursor:pointer}
+.itinerary-table tr:hover .itinerary-row-remove,.itinerary-row-remove:hover,.itinerary-row-remove:focus{opacity:1}
+.itinerary-total-cell{position:relative}
+.itinerary-row-add{left:auto!important;right:-26px!important;bottom:auto!important;top:50%;transform:translateY(-50%);width:16px;height:16px;font-size:14px;line-height:14px;opacity:0}
+.itinerary-table tr:hover .itinerary-row-add,.itinerary-row-add:hover,.itinerary-row-add:focus{opacity:1}
+.itinerary-input{width:100%;height:14px;padding:0;border:0;background:transparent;color:inherit;font:inherit;text-align:center;outline:0}
+.itinerary-input:focus,.journey-days-input:focus{background:#fff8df;box-shadow:0 0 0 1px #c89b58 inset}
+.itinerary-input[type=date]{font-size:7px;color:#5f8296}
+.money-input{text-align:right}
+.journey-days-input{width:100%;height:13px;padding:0;border:0;background:transparent;color:var(--green);font:inherit;font-weight:bold;text-align:left;outline:0}
+.trip-totals{position:absolute;top:616px;right:62px;display:grid;grid-template-columns:104px 111px;grid-auto-rows:16px;font-size:9.5px}
+.trip-totals>b{text-align:right;padding-right:4px}
+.trip-totals strong{padding:1px 5px;display:flex;justify-content:space-between}
+.total-highlight{background:#718487;color:white}
+.trip-authorized,.trip-approved{position:absolute;top:664px;font-size:8px;line-height:11px}
+.trip-authorized{left:76px;width:173px}.trip-approved{left:345px;width:154px}
+.trip-authorized .sheet-fill,.trip-approved .sheet-fill{margin-bottom:7px}
+.trip-authorized b{font-size:7px;white-space:nowrap}
+.trip-approved{white-space:nowrap}
+.trip-bottom-rule{position:absolute;top:730px;left:57px;right:58px;border-top:1px solid #555}
+.budget-structure{position:absolute;top:747px;left:55px;width:286px;height:124px}
+.budget-structure .side-label{width:19px}
+.bond-page .budget-structure table{position:absolute;left:19px;width:267px}
+.bond-page .budget-structure th,.bond-page .budget-structure td{height:15.5px;border:1px solid #a5b4b7;vertical-align:middle;padding:1px 3px;text-align:right}
+.bond-page .budget-structure th{width:73%;font-size:8px;font-style:italic;border-left:0}
+.bond-page .budget-structure td{font-size:10px}
+.budget-structure .blue-value{font-weight:bold}
+.trip-receipt{position:absolute;top:748px;left:420px;width:335px;height:126px}
+.trip-receipt h3{border-top:1px solid #555;border-bottom:1px solid #555;text-align:center;font-size:9px;line-height:16px}
+.trip-receipt p{font-size:8px;line-height:13px}
+.trip-receipt-sign{position:absolute;left:-27px;bottom:0;width:131px;text-align:center;font-size:10px}
+.trip-receipt-sign .sheet-fill{margin-bottom:5px}
+.bond-page .trip-receipt table{position:absolute;right:0;bottom:0;width:205px;font-size:8.5px}
+.bond-page .trip-receipt th,.bond-page .trip-receipt td{border:1px solid #8f9fa4;height:15px;padding:1px 3px;text-align:left;vertical-align:middle}
+.bond-page .trip-receipt th{width:46%;font-size:8px}
+.travel-letterhead{position:absolute;left:8px;right:8px;bottom:14px}
+.travel-letterhead p{text-align:center;font:12px/18px 'Times New Roman',serif;color:#737c89}
+.travel-letterhead>div{height:26px;background:#204d7e;color:white;display:flex;align-items:center;justify-content:space-around;font:8px 'Times New Roman',serif}
+.travel-letterhead b{display:inline-block;background:#eee;color:#315b80;border-radius:3px;font:700 12px/15px Arial;padding:0 3px;margin-left:2px}
+.travel-letterhead span:last-child{font-size:13px}
+ .sheet-edit{display:inline-block;width:100%;min-width:0;height:16px;padding:0 2px;border:0;border-bottom:1px solid #555;border-radius:0;outline:0;background:transparent;color:inherit;font:inherit;font-weight:inherit;text-transform:none;vertical-align:baseline}
+.sheet-edit:focus{background:#fff8df;box-shadow:0 0 0 1px #c89b58 inset}
+.payee-input.filled,.dni-input.filled,.receipt-dni-input.filled{border-bottom-color:transparent}
+.payee-input{flex:0 0 auto;text-align:center;border-bottom:0!important;overflow:visible}.payee-input.filled{border-bottom:0!important}
+.person-address-edit,.person-category .sheet-edit{border-bottom:0!important}
+.travel-personal .sheet-edit{position:relative;top:-2px}
+.payee-measure{position:absolute;display:inline-block;width:max-content;visibility:hidden;white-space:pre;font:700 10.6px/normal Arial,sans-serif;letter-spacing:normal;pointer-events:none}
+.payee-input{font-family:Arial,sans-serif;font-size:10.6px;font-weight:700;text-transform:uppercase;flex:0 0 auto!important;appearance:none;-webkit-appearance:none;padding-right:0}.payee-input::-webkit-calendar-picker-indicator,.payee-input::-webkit-list-button{display:none!important;opacity:0;width:0}.dni-input{display:inline-block;width:116px;height:14px;font-size:10px;font-weight:700}.receipt-dni-input{display:inline-block;width:126px;height:16px;font-size:13px}.person-edit{height:14px;color:#6d8d9b}.person-fields .person-edit{font-family:'Times New Roman',serif;font-style:italic}
+@page{size:letter;margin:0}
+@media print{.topbar,.drawer,.overlay,.editor-toolbar,.page-controls,.reference-toggle,.paper-workspace{display:none!important}.editor-page{background:white;padding:0;overflow:visible}.print-workspace{display:block!important}.print-workspace .paper-scroll{margin:0}.bond-page{box-shadow:none;width:8.5in;height:11in;break-after:page;page-break-after:always}.print-workspace .paper-scroll:last-child .bond-page{break-after:auto;page-break-after:auto}}
+.expense-input{width:100%;height:14px;padding:0 2px;border:0;border-radius:0;background:transparent;color:inherit;font:inherit;outline:0}.expense-input:focus{background:#fff8df;box-shadow:0 0 0 1px #c89b58 inset}.object-input{text-align:center}.description-input{text-align:left}.object-cell{position:relative}.amount-input{text-align:right}.expense-spacer td:nth-child(2){position:relative}.row-add{position:absolute;z-index:3;left:50%;bottom:-11px;width:20px;height:20px;padding:0;transform:translateX(-50%);border-radius:50%;background:#c79a57;color:#fff;font-size:17px;line-height:18px;opacity:0;transition:opacity .15s}.object-cell:hover .row-add,.row-add:hover,.row-add:focus{opacity:1}.cheque-description-input{display:block;width:100%;height:82px;padding:0 2px;border:0;resize:none;background:transparent;color:inherit;font:700 11.4px/14.7px Arial,sans-serif;text-align:justify;outline:0}.cheque-description-input:focus{background:#fff8df;box-shadow:0 0 0 1px #c89b58 inset}
+
+/* The itinerary grows in place. Every lower block follows its real row height. */
+.specimen-three:not(.continuation-page) .trip-totals{top:calc(616px + var(--itinerary-shift, 0px))}
+.specimen-three:not(.continuation-page) .trip-authorized,.specimen-three:not(.continuation-page) .trip-approved{top:calc(664px + var(--itinerary-shift, 0px))}
+.specimen-three:not(.continuation-page) .trip-bottom-rule{top:calc(730px + var(--itinerary-shift, 0px))}
+.specimen-three:not(.continuation-page) .budget-structure{top:calc(747px + var(--itinerary-shift, 0px))}
+.specimen-three:not(.continuation-page) .trip-receipt{top:calc(748px + var(--itinerary-shift, 0px))}
+.specimen-three:not(.continuation-page) .travel-letterhead{top:calc(998px + var(--itinerary-shift, 0px));bottom:auto}
+
+/* Move the lowest content to the continuation sheet first. */
+.specimen-three:not(.continuation-page).overflow-stage-1 .travel-letterhead,
+.specimen-three:not(.continuation-page).overflow-stage-2 .travel-letterhead,
+.specimen-three:not(.continuation-page).overflow-stage-3 .travel-letterhead,
+.specimen-three:not(.continuation-page).overflow-stage-4 .travel-letterhead{display:none}
+.specimen-three:not(.continuation-page).overflow-stage-2 .budget-structure,
+.specimen-three:not(.continuation-page).overflow-stage-2 .trip-receipt,
+.specimen-three:not(.continuation-page).overflow-stage-3 .budget-structure,
+.specimen-three:not(.continuation-page).overflow-stage-3 .trip-receipt,
+.specimen-three:not(.continuation-page).overflow-stage-4 .budget-structure,
+.specimen-three:not(.continuation-page).overflow-stage-4 .trip-receipt{display:none}
+.specimen-three:not(.continuation-page).overflow-stage-3 .trip-authorized,
+.specimen-three:not(.continuation-page).overflow-stage-3 .trip-approved,
+.specimen-three:not(.continuation-page).overflow-stage-3 .trip-bottom-rule,
+.specimen-three:not(.continuation-page).overflow-stage-4 .trip-authorized,
+.specimen-three:not(.continuation-page).overflow-stage-4 .trip-approved,
+.specimen-three:not(.continuation-page).overflow-stage-4 .trip-bottom-rule{display:none}
+.specimen-three:not(.continuation-page).overflow-stage-4 .trip-totals{display:none}
+
+/* Continuation pages reuse the original blocks and their original typography. */
+.continuation-page .trip-totals,.continuation-page .trip-authorized,.continuation-page .trip-approved,.continuation-page .trip-bottom-rule,.continuation-page .budget-structure,.continuation-page .trip-receipt,.continuation-page .travel-letterhead{display:block}
+.continuation-page .trip-totals{display:grid}
+.continuation-page .itinerary-table{top:110px;left:62px;width:691px}
+.continuation-page.continuation-stage-1 .trip-totals,.continuation-page.continuation-stage-1 .trip-authorized,.continuation-page.continuation-stage-1 .trip-approved,.continuation-page.continuation-stage-1 .trip-bottom-rule,.continuation-page.continuation-stage-1 .budget-structure,.continuation-page.continuation-stage-1 .trip-receipt{display:none}
+.continuation-page.continuation-stage-2 .trip-totals,.continuation-page.continuation-stage-2 .trip-authorized,.continuation-page.continuation-stage-2 .trip-approved,.continuation-page.continuation-stage-2 .trip-bottom-rule{display:none}
+.continuation-page.continuation-stage-3 .trip-totals{display:none}
+.editor-toolbar>.save-area{display:flex;align-items:center;gap:10px;margin-left:auto}.save-button,.print-button{border:0;border-radius:8px;padding:10px 18px;color:#fff;font-weight:700;cursor:pointer}.save-button{background:#1f5d78}.print-button{background:#c79a57}.save-button:disabled{opacity:.65;cursor:wait}.save-area small{color:#667983;font-size:11px}.save-area .save-error{color:#a4433e}.print-workspace{display:none}

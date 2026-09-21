@@ -1,0 +1,23 @@
+.personnel-page .page-heading{align-items:center}
+.personnel-page .page-heading h1{margin:0}
+.personnel-page .page-heading .small-button span{font-size:18px;line-height:12px}
+.personnel-form{background:#fff;border:1px solid #e6ece6;padding:26px 30px;margin-bottom:24px;box-shadow:0 7px 22px #17363308}
+.personnel-form-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px}
+.personnel-form-heading h2{font:600 25px 'Playfair Display';margin:0;color:#173633}
+.personnel-form-heading>span{color:#80918c;font-size:12px}
+.personnel-fields{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.personnel-form-actions{display:flex;justify-content:flex-end;align-items:center;gap:18px;margin-top:24px}
+.personnel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.person-card{background:#fff;border:1px solid #e6ece6;padding:22px;box-shadow:0 7px 22px #17363308}
+.person-card-top{display:flex;align-items:center;gap:12px;border-bottom:1px solid #edf1ed;padding-bottom:17px}
+.person-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#d5e5d8;color:#365f50;font:500 12px 'DM Mono';flex:none}
+.person-card h2{font:600 19px 'Playfair Display';margin:0;color:#173633}
+.person-card-top p{margin:3px 0 0;color:#80918c;font-size:12px}
+.usage-count{margin-left:auto;color:#a77c3f;background:#fff7e8;border-radius:15px;padding:5px 9px;font-size:11px;white-space:nowrap}
+.person-data{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 20px;padding-top:18px}
+.person-data small,.person-data strong{display:block}
+.person-data small{color:#98a5a0;font:500 9px 'DM Mono';letter-spacing:.05em;text-transform:uppercase}
+.person-data strong{color:#597069;font-size:12px;margin-top:3px;font-weight:500;word-break:break-word}
+.success-notice{background:#e8f3e9;color:#4f8060;border-left-color:#6caa81}
+@media(max-width:750px){.personnel-fields,.personnel-grid{grid-template-columns:1fr}.personnel-form-heading{display:block}.personnel-form-heading>span{display:block;margin-top:8px}.personnel-form{padding:22px 18px}.person-data{gap:12px}.personnel-page .page-heading{align-items:flex-start}}
+

@@ -1,0 +1,9 @@
+.status-pill.offline{background:#f7e7e4;color:#a0524b}
+.status-pill.offline i{background:#c45d55}
+.refresh-button:disabled{opacity:.55;cursor:wait}
+.refresh-button.is-loading span{display:inline-block;animation:spin .7s linear infinite}
+.local-record{background:#fff0ee!important;box-shadow:inset 3px 0 0 #c96b62}
+.local-record:hover{background:#fae5e2!important}
+.local-record .tag{background:#f5d9d5;color:#9b4d47}
+.save-area .save-offline{color:#ad5a50}
+
