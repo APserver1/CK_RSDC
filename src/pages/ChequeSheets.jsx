@@ -134,7 +134,7 @@ export function PageOne({ number, type, example, date, comprobante, beneficiary,
         <tfoot><tr><td /><td>TOTAL</td><td>{amountText(total)}</td></tr></tfoot>
       </table>
     </div>
-    <div className="cheque-receiver"><Line /><b>RECEPTOR DE CHEQUE</b><p><b>IDENTIDAD: &nbsp; <EditField ariaLabel="DNI del beneficiario en hoja 1" className="dni-input" value={identity} fallback={d.identity} onChange={onIdentityChange} /></b></p></div>
+    <div className="cheque-receiver"><Line /><b>RECEPTOR DE CHEQUE</b><p><b>{type === 'Compra' ? 'RTN' : 'IDENTIDAD'}: &nbsp; <EditField ariaLabel={`${type === 'Compra' ? 'RTN' : 'DNI'} del beneficiario en hoja 1`} className="dni-input" value={identity} fallback={d.identity} onChange={onIdentityChange} /></b></p></div>
     <div className="cheque-responsible"><Line /><b>RESPONSABLE<br />{administrator}<br />ADMINISTRACION</b></div>
   </article>
 }
@@ -154,7 +154,7 @@ export function PageTwo({ number, type, example, date, comprobante, identity, ch
     <p className="receipt-purpose">{example ? d.purpose : chequeDescription}</p>
     <div className="receipt-identifiers"><b>CHEQUE No. {number}</b><b>COMPROBANTE {d.receipt || '____________'}</b></div>
     <div className="receipt-place">SAN PEDRO SULA {d.date || '______________________________'}</div>
-    <div className="receipt-sign"><Line />FIRMA DEL BENEFICIARIO<br /><span>DNI: <EditField ariaLabel="DNI del beneficiario en hoja 2" className="receipt-dni-input" value={identity} fallback={d.identity} onChange={onIdentityChange} /></span></div>
+    <div className="receipt-sign"><Line />FIRMA DEL BENEFICIARIO<br /><span>{type === 'Compra' ? 'RTN' : 'DNI'}: <EditField ariaLabel={`${type === 'Compra' ? 'RTN' : 'DNI'} del beneficiario en hoja 2`} className="receipt-dni-input" value={identity} fallback={d.identity} onChange={onIdentityChange} /></span></div>
   </article>
 }
 
