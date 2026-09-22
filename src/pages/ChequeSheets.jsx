@@ -1,6 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import leftLogo from '../../images/logo_izquierdo.png'
-import rightLogo from '../../images/logo_derecho.png'
+import newLogo from '../../images/logo 2026.png'
 import { supabase } from '../lib/supabase'
 import { fetchAndCacheLookup } from '../lib/offlineStore'
 import { bundledIncomeCode } from '../data/incomeCodes'
@@ -18,7 +17,7 @@ const administrator = 'Lic. Yessy Karina Rivera Ramirez'
 const director = 'Dra. Evelyn Yamali Bueso Smith'
 
 function Logos() {
-  return <div className="sheet-logos"><img src={leftLogo} alt="Gobierno de la República de Honduras · Secretaría de Salud" /><img src={rightLogo} alt="Región Sanitaria de Cortés" /></div>
+  return <div className="sheet-logos"><img src={newLogo} alt="Secretaría de Salud · Región Sanitaria de Cortés" /></div>
 }
 function localDateParts(date) {
   const current = date ? new Date(`${date}T12:00:00`) : new Date()
@@ -36,7 +35,7 @@ function dataFor(example, type, date, comprobante) {
   return { beneficiary: '', identity: '', position: '', salary: '', level: '', category: '', department: '', city: '', residence: '', amount: '0.00', words: '', date: dates.long, shortDate: dates.short, monthYear: dates.monthYear, receipt: comprobante ? `${comprobante}-${selected.getMonth() + 1}-${selected.getFullYear()}` : '', travelReceipt: comprobante ? `${comprobante}-${selected.getFullYear()}` : '', purpose: '' }
 }
 const units = ['CERO', 'UNO', 'DOS', 'TRES', 'CUATRO', 'CINCO', 'SEIS', 'SIETE', 'OCHO', 'NUEVE', 'DIEZ', 'ONCE', 'DOCE', 'TRECE', 'CATORCE', 'QUINCE', 'DIECISÉIS', 'DIECISIETE', 'DIECIOCHO', 'DIECINUEVE', 'VEINTE', 'VEINTIUNO', 'VEINTIDÓS', 'VEINTITRÉS', 'VEINTICUATRO', 'VEINTICINCO', 'VEINTISÉIS', 'VEINTISIETE', 'VEINTIOCHO', 'VEINTINUEVE']
-const tens = ['', '', 'TREINTA', 'CUARENTA', 'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA']
+const tens = ['', '', 'VEINTE', 'TREINTA', 'CUARENTA', 'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA']
 function numberWords(value) {
   const n = Math.floor(value)
   if (n < 30) return units[n]
@@ -55,16 +54,28 @@ function numeric(value) { return Number(String(value ?? '').replace(/,/g, '')) |
 function formatAmount(value) { return numeric(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
 function Line({ children, className = '' }) { return <span className={`sheet-fill ${className}`}>{children || '\u00a0'}</span> }
 function EditField({ value, fallback = '', onChange, className = '', ariaLabel, uppercase = false, style, list }) {
-  return <input aria-label={ariaLabel} list={list} className={`sheet-edit ${className} ${(value || fallback) ? 'filled' : ''}`} style={style} value={value || fallback} onChange={event => onChange(uppercase ? event.target.value.toUpperCase() : event.target.value)} />
+  const handleChange = event => {
+    const input = event.currentTarget
+    const selectionStart = input.selectionStart
+    const selectionEnd = input.selectionEnd
+    onChange(uppercase ? input.value.toUpperCase() : input.value)
+    if (uppercase && selectionStart !== null && selectionEnd !== null) {
+      requestAnimationFrame(() => {
+        if (document.activeElement === input) input.setSelectionRange(selectionStart, selectionEnd)
+      })
+    }
+  }
+  return <input aria-label={ariaLabel} list={list} className={`sheet-edit ${className} ${(value || fallback) ? 'filled' : ''}`} style={style} value={value || fallback} onChange={handleChange} />
 }
 function PayeeField({ value, fallback, onChange, list }) {
   const shown = value || fallback || ''
   const measure = useRef(null)
   const [width, setWidth] = useState(24)
+  const printFontSize = shown.length > 45 ? 8.6 : shown.length > 32 ? 9.5 : 10.6
   useLayoutEffect(() => {
     if (measure.current) setWidth(Math.max(24, measure.current.offsetWidth + 12))
   }, [shown])
-  return <><span ref={measure} className="payee-measure">{shown || ' '}</span><EditField ariaLabel="Beneficiario del cheque" list={list} className="payee-input" style={{ width: `${width}px` }} value={value} fallback={fallback} onChange={onChange} uppercase /></>
+  return <><span ref={measure} className="payee-measure">{shown || ' '}</span><span className="payee-print-value" style={{ fontSize: `${printFontSize}px` }}>{shown}</span><EditField ariaLabel="Beneficiario del cheque" list={list} className="payee-input" style={{ width: `${width}px` }} value={value} fallback={fallback} onChange={onChange} uppercase /></>
 }
 
 export function PageOne({ number, type, example, date, comprobante, beneficiary, identity, chequeDescription, beneficiaryHistory = [], onBeneficiaryChange, onBeneficiarySelect, onIdentityChange, onChequeDescriptionChange, expenseRows, onExpenseRowsChange }) {
@@ -105,6 +116,8 @@ export function PageOne({ number, type, example, date, comprobante, beneficiary,
     }
   }
   const amountText = value => formatAmount(value)
+  const payeeName = beneficiary || d.beneficiary || ''
+  const payeeDotWidth = Math.max(18, Math.min(88, 88 - payeeName.length * 0.4))
   const handleBeneficiaryChange = value => {
     const normalized = value.toUpperCase()
     onBeneficiaryChange(normalized)
@@ -116,7 +129,7 @@ export function PageOne({ number, type, example, date, comprobante, beneficiary,
       <section className="bank-block">
         <h1>BANCO NACIONAL DE DESARROLLO AGRICOLA</h1><Logos /><b className="bank-number">CHEQUE {number}</b>
         <div className="bank-date"><b>POR ESTE CHEQUE:</b><b>SAN PEDRO SULA {d.date || '________________________'}</b></div>
-        <div className="bank-payee"><b>PAGUESE A:</b><span className="dot-leader" /><PayeeField value={beneficiary} fallback={d.beneficiary} list="beneficiary-history" onChange={handleBeneficiaryChange} /><span className="dot-leader" /><b>L. {d.amount}</b></div><datalist id="beneficiary-history">{beneficiaryHistory.map(person => <option key={person.beneficiary} value={person.beneficiary} />)}</datalist>
+        <div className="bank-payee" style={{ '--payee-dot-width': `${payeeDotWidth}px` }}><b>PAGUESE A:</b><span className="dot-leader" /><PayeeField value={beneficiary} fallback={d.beneficiary} list="beneficiary-history" onChange={handleBeneficiaryChange} /><span className="dot-leader" /><b>L. {d.amount}</b></div><datalist id="beneficiary-history">{beneficiaryHistory.map(person => <option key={person.beneficiary} value={person.beneficiary} />)}</datalist>
         <div className="bank-words"><b>LA SUMA DE:</b><span className="dot-leader" /><b>{d.words}</b><span className="dot-leader" /></div>
         <div className="bank-address">Sres. Region Departamental de Cortes</div>
         <div className="bank-funds">Fondos Recuperados</div><b className="bank-city">San Pedro Sula</b>
