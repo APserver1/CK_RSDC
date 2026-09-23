@@ -41,7 +41,7 @@ function numberWords(value) {
   if (n < 30) return units[n]
   if (n < 100) return tens[Math.floor(n / 10)] + (n % 10 ? ` Y ${units[n % 10]}` : '')
   if (n < 1000) return n === 100 ? 'CIEN' : (Math.floor(n / 100) === 1 ? 'CIENTO' : ['', '', 'DOSCIENTOS', 'TRESCIENTOS', 'CUATROCIENTOS', 'QUINIENTOS', 'SEISCIENTOS', 'SETECIENTOS', 'OCHOCIENTOS', 'NOVECIENTOS'][Math.floor(n / 100)]) + (n % 100 ? ` ${numberWords(n % 100)}` : '')
-  if (n < 1000000) return (Math.floor(n / 1000) === 1 ? 'MIL' : `${numberWords(Math.floor(n / 1000))} MIL`) + (n % 1000 ? ` ${numberWords(n % 1000)}` : '')
+  if (n < 1000000) return (Math.floor(n / 1000) === 1 ? 'UN MIL' : `${numberWords(Math.floor(n / 1000))} MIL`) + (n % 1000 ? ` ${numberWords(n % 1000)}` : '')
   return String(n)
 }
 function amountInWords(value) {

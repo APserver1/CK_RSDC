@@ -19,7 +19,7 @@
 .sheet-logos img{width:315px;height:auto}
 /* 1. Cheque, comprobante and signatures. */
 .cheque-frame{position:absolute;left:52px;top:86px;width:712px;border:1.4px solid var(--rule)}
-.bank-block{height:250px;position:relative;background:#e2f0f3;border-bottom:1.4px solid var(--rule)}
+.bank-block{height:250px;position:relative;background:#d5edf3;border-bottom:1.4px solid var(--rule)}
 .bank-block h1{text-align:center;font:700 15px/19px Arial,sans-serif;padding-top:2px}
 .bank-block .sheet-logos{left:42px;right:122px;top:12px}
 .bank-block .sheet-logos img{width:266px;height:auto}
@@ -43,7 +43,7 @@
 .bond-page .voucher-ledger{border-top:1.4px solid var(--rule);font-size:11.5px}
 .bond-page .voucher-ledger th,.bond-page .voucher-ledger td{border-right:1.4px solid var(--rule);padding:2px}
 .bond-page .voucher-ledger th:last-child,.bond-page .voucher-ledger td:last-child{border-right:0}
-.bond-page .voucher-ledger thead{height:29px;background:#d8edf3;border-bottom:1.4px solid var(--rule)}
+.bond-page .voucher-ledger thead{height:29px;background:#cce9f0;border-bottom:1.4px solid var(--rule)}
 .bond-page .voucher-ledger th{vertical-align:middle;white-space:nowrap;font-size:10.5px}
 .bond-page .voucher-ledger tbody{height:274px}.bond-page .voucher-ledger tbody .expense-row{height:14px}.bond-page .voucher-ledger tbody .expense-spacer{height:auto}
 .bond-page .voucher-ledger tbody td{line-height:15px}
@@ -54,7 +54,7 @@
 .voucher-description-layout{display:flex;flex-direction:column;min-height:max(120px,calc(266px - var(--expense-rows-height)))}
 .voucher-approval{flex:none;margin-top:auto;padding-top:45px;padding-bottom:28px;line-height:15px}
 .voucher-approval .sheet-fill{width:170px;margin:0 0 5px 18px}
-.bond-page .voucher-ledger tfoot{height:27px;background:#d8edf3;border-top:1.4px solid var(--rule)}
+.bond-page .voucher-ledger tfoot{height:27px;background:#cce9f0;border-top:1.4px solid var(--rule)}
 .bond-page .voucher-ledger tfoot td{vertical-align:middle;text-align:center}
 .cheque-receiver{position:absolute;left:52px;top:899px;width:171px;font-size:10.8px;line-height:17px}
 .cheque-receiver p{margin-top:16px;white-space:nowrap;font-size:10px}
@@ -133,6 +133,7 @@
 .itinerary-input[type=date]{font-size:7px;color:#5f8296}
 .money-input{text-align:right}
 .journey-days-input{width:100%;height:13px;padding:0;border:0;background:transparent;color:var(--green);font:inherit;font-weight:bold;text-align:left;outline:0}
+.journey-dates .green-value,.journey-days-input{color:#008f63}
 .trip-totals{position:absolute;top:616px;right:62px;display:grid;grid-template-columns:104px 111px;grid-auto-rows:16px;font-size:9.5px}
 .trip-totals>b{text-align:right;padding-right:4px}
 .trip-totals strong{padding:1px 5px;display:flex;justify-content:space-between}
