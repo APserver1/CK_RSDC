@@ -208,3 +208,11 @@
 .continuation-page.continuation-stage-3 .trip-totals{display:none}
 .editor-toolbar>.save-area{display:flex;align-items:center;gap:10px;margin-left:auto}.save-button,.print-button{border:0;border-radius:8px;padding:10px 18px;color:#fff;font-weight:700;cursor:pointer}.save-button{background:#1f5d78}.print-button{background:#c79a57}.save-button:disabled{opacity:.65;cursor:wait}.save-area small{color:#667983;font-size:11px}.save-area .save-error{color:#a4433e}.print-workspace{display:none}
 .cheque-description-input{min-height:82px;height:82px;overflow:hidden}
+.cheque-description-print{display:none}
+@media print{
+  .print-workspace .voucher-ledger tbody{height:274px}
+  .print-workspace .cheque-description-input{display:none}
+  .print-workspace .voucher-description-layout{display:flex;flex-direction:column;min-height:max(120px,calc(266px - var(--expense-rows-height)))}
+  .print-workspace .cheque-description-print{display:block;white-space:pre-wrap;overflow-wrap:anywhere;font:700 11.4px/14.7px Arial,sans-serif;text-align:justify}
+  .print-workspace .voucher-approval{position:static;flex:none;margin-top:auto;padding-top:24px;padding-bottom:28px}
+}

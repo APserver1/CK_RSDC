@@ -90,11 +90,14 @@ export function PageOne({ number, type, example, date, comprobante, beneficiary,
     d.words = amountInWords(total)
   }
   const description = example ? d.purpose : chequeDescription
-  useLayoutEffect(() => {
+  const resizeDescription = () => {
     const field = descriptionRef.current
     if (!field) return
     field.style.height = 'auto'
     field.style.height = `${field.scrollHeight}px`
+  }
+  useLayoutEffect(() => {
+    resizeDescription()
   }, [description])
   const addRow = () => {
     const nextNumber = expenseRows.length + 1
@@ -149,9 +152,9 @@ export function PageOne({ number, type, example, date, comprobante, beneficiary,
         <p className="voucher-unit">Unidad Ejecutora: <b>Region Departamental de Cortes</b><span>Banco: <b>BANADESA</b></span></p>
         <b className="voucher-account">Cuenta No. :02-025-000058-9</b>
       </section>
-      <table className="voucher-ledger"><colgroup><col style={{ width: '12%' }} /><col style={{ width: '70%' }} /><col style={{ width: '18%' }} /></colgroup>
+      <table className="voucher-ledger" style={{ '--expense-rows-height': `${rows.length * 18}px` }}><colgroup><col style={{ width: '12%' }} /><col style={{ width: '70%' }} /><col style={{ width: '18%' }} /></colgroup>
         <thead><tr><th>OBJETO</th><th>DESCRIPCION</th><th>VALOR EN LEMPIRAS</th></tr></thead>
-        <tbody>{rows.map((row, index) => <tr className="expense-row" key={`${index}-${row.code}`}><td className="object-cell"><input className="expense-input object-input" aria-label={`Objeto de gasto ${index + 1}`} value={row.code} readOnly={example} onChange={event => updateRow(index, 'code', event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !example) { event.preventDefault(); addRow() } }} />{!example && <button className="row-add" type="button" aria-label="Añadir otra fila de gasto" onClick={addRow}>+</button>}</td><td><input className="expense-input description-input" aria-label={`Descripción de gasto ${index + 1}`} value={row.description} readOnly /></td><td className="amount-cell"><input className="expense-input amount-input" aria-label={`Valor de gasto ${index + 1}`} type="number" min="0" step="0.01" value={row.amount} readOnly={example} onChange={event => updateRow(index, 'amount', event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !example) { event.preventDefault(); addRow() } }} /></td></tr>)}<tr className="expense-spacer"><td /><td><textarea ref={descriptionRef} aria-label="Descripción del cheque" className="cheque-description-input" value={description} readOnly={example} onChange={event => onChequeDescriptionChange(event.target.value)} placeholder="Escribe la descripción del cheque..." /><div className="voucher-approval"><Line />{director}<br />JEFATURA REGION DEPTAL. DE CORTES</div></td><td /></tr></tbody>
+        <tbody>{rows.map((row, index) => <tr className="expense-row" key={`${index}-${row.code}`}><td className="object-cell"><input className="expense-input object-input" aria-label={`Objeto de gasto ${index + 1}`} value={row.code} readOnly={example} onChange={event => updateRow(index, 'code', event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !example) { event.preventDefault(); addRow() } }} />{!example && <button className="row-add" type="button" aria-label="Añadir otra fila de gasto" onClick={addRow}>+</button>}</td><td><input className="expense-input description-input" aria-label={`Descripción de gasto ${index + 1}`} value={row.description} readOnly /></td><td className="amount-cell"><input className="expense-input amount-input" aria-label={`Valor de gasto ${index + 1}`} type="number" min="0" step="0.01" value={row.amount} readOnly={example} onChange={event => updateRow(index, 'amount', event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !example) { event.preventDefault(); addRow() } }} /></td></tr>)}<tr className="expense-spacer"><td /><td><div className="voucher-description-layout"><textarea ref={descriptionRef} aria-label="Descripción del cheque" className="cheque-description-input" value={description} readOnly={example} onChange={event => onChequeDescriptionChange(event.target.value)} placeholder="Escribe la descripción del cheque..." /><div className="cheque-description-print">{description}</div><div className="voucher-approval"><Line />{director}<br />JEFATURA REGION DEPTAL. DE CORTES</div></div></td><td /></tr></tbody>
         <tfoot><tr><td /><td>TOTAL</td><td>{amountText(total)}</td></tr></tfoot>
       </table>
     </div>
