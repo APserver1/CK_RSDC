@@ -80,6 +80,7 @@ function PayeeField({ value, fallback, onChange, list }) {
 
 export function PageOne({ number, type, example, date, comprobante, beneficiary, identity, chequeDescription, beneficiaryHistory = [], onBeneficiaryChange, onBeneficiarySelect, onIdentityChange, onChequeDescriptionChange, expenseRows, onExpenseRowsChange }) {
   const d = dataFor(example, type, date, comprobante)
+  const descriptionRef = useRef(null)
   const travel = type === 'Viatico'
   const referenceRows = travel ? [{ code: '26210', description: 'VIATICOS NACIONALES', amount: '281.25' }, { code: '25100', description: 'SERVICIO DE TRANSPORTE', amount: '132.00' }] : [{ code: '', description: 'COMPRA DE BIENES Y/O SERVICIOS', amount: d.amount }]
   const rows = example ? referenceRows : expenseRows
@@ -88,6 +89,13 @@ export function PageOne({ number, type, example, date, comprobante, beneficiary,
     d.amount = formatAmount(total)
     d.words = amountInWords(total)
   }
+  const description = example ? d.purpose : chequeDescription
+  useLayoutEffect(() => {
+    const field = descriptionRef.current
+    if (!field) return
+    field.style.height = 'auto'
+    field.style.height = `${field.scrollHeight}px`
+  }, [description])
   const addRow = () => {
     const nextNumber = expenseRows.length + 1
     onExpenseRowsChange(current => [...current, { code: '', description: '', amount: '' }])
@@ -143,7 +151,7 @@ export function PageOne({ number, type, example, date, comprobante, beneficiary,
       </section>
       <table className="voucher-ledger"><colgroup><col style={{ width: '12%' }} /><col style={{ width: '70%' }} /><col style={{ width: '18%' }} /></colgroup>
         <thead><tr><th>OBJETO</th><th>DESCRIPCION</th><th>VALOR EN LEMPIRAS</th></tr></thead>
-        <tbody>{rows.map((row, index) => <tr className="expense-row" key={`${index}-${row.code}`}><td className="object-cell"><input className="expense-input object-input" aria-label={`Objeto de gasto ${index + 1}`} value={row.code} readOnly={example} onChange={event => updateRow(index, 'code', event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !example) { event.preventDefault(); addRow() } }} />{!example && <button className="row-add" type="button" aria-label="Añadir otra fila de gasto" onClick={addRow}>+</button>}</td><td><input className="expense-input description-input" aria-label={`Descripción de gasto ${index + 1}`} value={row.description} readOnly /></td><td className="amount-cell"><input className="expense-input amount-input" aria-label={`Valor de gasto ${index + 1}`} type="number" min="0" step="0.01" value={row.amount} readOnly={example} onChange={event => updateRow(index, 'amount', event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !example) { event.preventDefault(); addRow() } }} /></td></tr>)}<tr className="expense-spacer"><td /><td><textarea aria-label="Descripción del cheque" className="cheque-description-input" value={example ? d.purpose : chequeDescription} readOnly={example} onChange={event => onChequeDescriptionChange(event.target.value)} placeholder="Escribe la descripción del cheque..." /><div className="voucher-approval"><Line />{director}<br />JEFATURA REGION DEPTAL. DE CORTES</div></td><td /></tr></tbody>
+        <tbody>{rows.map((row, index) => <tr className="expense-row" key={`${index}-${row.code}`}><td className="object-cell"><input className="expense-input object-input" aria-label={`Objeto de gasto ${index + 1}`} value={row.code} readOnly={example} onChange={event => updateRow(index, 'code', event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !example) { event.preventDefault(); addRow() } }} />{!example && <button className="row-add" type="button" aria-label="Añadir otra fila de gasto" onClick={addRow}>+</button>}</td><td><input className="expense-input description-input" aria-label={`Descripción de gasto ${index + 1}`} value={row.description} readOnly /></td><td className="amount-cell"><input className="expense-input amount-input" aria-label={`Valor de gasto ${index + 1}`} type="number" min="0" step="0.01" value={row.amount} readOnly={example} onChange={event => updateRow(index, 'amount', event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !example) { event.preventDefault(); addRow() } }} /></td></tr>)}<tr className="expense-spacer"><td /><td><textarea ref={descriptionRef} aria-label="Descripción del cheque" className="cheque-description-input" value={description} readOnly={example} onChange={event => onChequeDescriptionChange(event.target.value)} placeholder="Escribe la descripción del cheque..." /><div className="voucher-approval"><Line />{director}<br />JEFATURA REGION DEPTAL. DE CORTES</div></td><td /></tr></tbody>
         <tfoot><tr><td /><td>TOTAL</td><td>{amountText(total)}</td></tr></tfoot>
       </table>
     </div>

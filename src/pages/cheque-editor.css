@@ -207,3 +207,4 @@
 .continuation-page.continuation-stage-2 .trip-totals,.continuation-page.continuation-stage-2 .trip-authorized,.continuation-page.continuation-stage-2 .trip-approved,.continuation-page.continuation-stage-2 .trip-bottom-rule{display:none}
 .continuation-page.continuation-stage-3 .trip-totals{display:none}
 .editor-toolbar>.save-area{display:flex;align-items:center;gap:10px;margin-left:auto}.save-button,.print-button{border:0;border-radius:8px;padding:10px 18px;color:#fff;font-weight:700;cursor:pointer}.save-button{background:#1f5d78}.print-button{background:#c79a57}.save-button:disabled{opacity:.65;cursor:wait}.save-area small{color:#667983;font-size:11px}.save-area .save-error{color:#a4433e}.print-workspace{display:none}
+.cheque-description-input{min-height:82px;height:82px;overflow:hidden}
