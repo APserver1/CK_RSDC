@@ -80,7 +80,10 @@ function PayeeField({ value, fallback, onChange, list }) {
 
 export function PageOne({ number, type, example, date, comprobante, beneficiary, identity, chequeDescription, beneficiaryHistory = [], onBeneficiaryChange, onBeneficiarySelect, onIdentityChange, onChequeDescriptionChange, expenseRows, onExpenseRowsChange }) {
   const d = dataFor(example, type, date, comprobante)
+  const pageRef = useRef(null)
+  const frameRef = useRef(null)
   const descriptionRef = useRef(null)
+  const [editingAmountIndex, setEditingAmountIndex] = useState(null)
   const travel = type === 'Viatico'
   const referenceRows = travel ? [{ code: '26210', description: 'VIATICOS NACIONALES', amount: '281.25' }, { code: '25100', description: 'SERVICIO DE TRANSPORTE', amount: '132.00' }] : [{ code: '', description: 'COMPRA DE BIENES Y/O SERVICIOS', amount: d.amount }]
   const rows = example ? referenceRows : expenseRows
@@ -99,6 +102,19 @@ export function PageOne({ number, type, example, date, comprobante, beneficiary,
   useLayoutEffect(() => {
     resizeDescription()
   }, [description])
+  useLayoutEffect(() => {
+    const page = pageRef.current
+    const frame = frameRef.current
+    if (!page || !frame) return
+    const positionSignatures = () => {
+      const frameBottom = frame.getBoundingClientRect().bottom - page.getBoundingClientRect().top
+      page.style.setProperty('--cheque-signature-shift', `${Math.max(0, Math.ceil(frameBottom - 864))}px`)
+    }
+    positionSignatures()
+    const observer = new ResizeObserver(positionSignatures)
+    observer.observe(frame)
+    return () => observer.disconnect()
+  }, [])
   const addRow = () => {
     const nextNumber = expenseRows.length + 1
     onExpenseRowsChange(current => [...current, { code: '', description: '', amount: '' }])
@@ -135,8 +151,8 @@ export function PageOne({ number, type, example, date, comprobante, beneficiary,
     const selected = beneficiaryHistory.find(person => person.beneficiary?.toUpperCase() === normalized)
     if (selected) onBeneficiarySelect?.(selected)
   }
-  return <article className="bond-page specimen-one" aria-label="Hoja 1: cheque y comprobante">
-    <div className="cheque-frame">
+  return <article ref={pageRef} className="bond-page specimen-one" aria-label="Hoja 1: cheque y comprobante">
+    <div ref={frameRef} className="cheque-frame">
       <section className="bank-block">
         <h1>BANCO NACIONAL DE DESARROLLO AGRICOLA</h1><Logos /><b className="bank-number">CHEQUE {number}</b>
         <div className="bank-date"><b>POR ESTE CHEQUE:</b><b>SAN PEDRO SULA {d.date || '________________________'}</b></div>
@@ -154,7 +170,7 @@ export function PageOne({ number, type, example, date, comprobante, beneficiary,
       </section>
       <table className="voucher-ledger" style={{ '--expense-rows-height': `${rows.length * 18}px` }}><colgroup><col style={{ width: '12%' }} /><col style={{ width: '70%' }} /><col style={{ width: '18%' }} /></colgroup>
         <thead><tr><th>OBJETO</th><th>DESCRIPCION</th><th>VALOR EN LEMPIRAS</th></tr></thead>
-        <tbody>{rows.map((row, index) => <tr className="expense-row" key={`${index}-${row.code}`}><td className="object-cell"><input className="expense-input object-input" aria-label={`Objeto de gasto ${index + 1}`} value={row.code} readOnly={example} onChange={event => updateRow(index, 'code', event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !example) { event.preventDefault(); addRow() } }} />{!example && <button className="row-add" type="button" aria-label="Añadir otra fila de gasto" onClick={addRow}>+</button>}</td><td><input className="expense-input description-input" aria-label={`Descripción de gasto ${index + 1}`} value={row.description} readOnly /></td><td className="amount-cell"><input className="expense-input amount-input" aria-label={`Valor de gasto ${index + 1}`} type="number" min="0" step="0.01" value={row.amount} readOnly={example} onChange={event => updateRow(index, 'amount', event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !example) { event.preventDefault(); addRow() } }} /></td></tr>)}<tr className="expense-spacer"><td /><td><div className="voucher-description-layout"><textarea ref={descriptionRef} aria-label="Descripción del cheque" className="cheque-description-input" value={description} readOnly={example} onChange={event => onChequeDescriptionChange(event.target.value)} placeholder="Escribe la descripción del cheque..." /><div className="cheque-description-print">{description}</div><div className="voucher-approval"><Line />{director}<br />JEFATURA REGION DEPTAL. DE CORTES</div></div></td><td /></tr></tbody>
+        <tbody>{rows.map((row, index) => <tr className="expense-row" key={`${index}-${row.code}`}><td className="object-cell"><input className="expense-input object-input" aria-label={`Objeto de gasto ${index + 1}`} value={row.code} readOnly={example} onChange={event => updateRow(index, 'code', event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !example) { event.preventDefault(); addRow() } }} />{!example && <button className="row-add" type="button" aria-label="Añadir otra fila de gasto" onClick={addRow}>+</button>}</td><td><input className="expense-input description-input" aria-label={`Descripción de gasto ${index + 1}`} value={row.description} readOnly /></td><td className="amount-cell"><input className="expense-input amount-input" aria-label={`Valor de gasto ${index + 1}`} type="text" inputMode="decimal" value={editingAmountIndex === index ? String(row.amount ?? '').replace(/,/g, '') : row.amount === '' ? '' : formatAmount(row.amount)} readOnly={example} onFocus={() => !example && setEditingAmountIndex(index)} onChange={event => updateRow(index, 'amount', event.target.value.replace(/,/g, ''))} onBlur={() => { if (!example && String(row.amount ?? '').trim()) updateRow(index, 'amount', formatAmount(row.amount)); if (!example) setEditingAmountIndex(null) }} onKeyDown={event => { if (event.key === 'Enter' && !example) { event.preventDefault(); event.currentTarget.blur(); addRow() } }} /></td></tr>)}<tr className="expense-spacer"><td /><td><div className="voucher-description-layout"><textarea ref={descriptionRef} aria-label="Descripción del cheque" className="cheque-description-input" value={description} readOnly={example} onChange={event => onChequeDescriptionChange(event.target.value)} placeholder="Escribe la descripción del cheque..." /><div className="cheque-description-print">{description}</div><div className="voucher-approval"><Line />{director}<br />JEFATURA REGION DEPTAL. DE CORTES</div></div></td><td /></tr></tbody>
         <tfoot><tr><td /><td>TOTAL</td><td>{amountText(total)}</td></tr></tfoot>
       </table>
     </div>
@@ -175,10 +191,12 @@ export function PageTwo({ number, type, example, date, comprobante, identity, ch
     <b className="receipt-value">RECIBO POR: &nbsp; L. &nbsp;&nbsp; {d.amount}</b>
     <div className="receipt-ack">RECIBI DE FONDOS RECUPERADO DE LA REGION DEPARTAMENTAL DE CORTES<br /><div>LA CANTIDAD DE: <b>{d.words || '___________________________________'}</b></div></div>
     <div className="receipt-for">VALOR QUE CORRESPONDE POR:</div>
-    <p className="receipt-purpose">{example ? d.purpose : chequeDescription}</p>
-    <div className="receipt-identifiers"><b>CHEQUE No. {number}</b><b>COMPROBANTE {d.receipt || '____________'}</b></div>
-    <div className="receipt-place">SAN PEDRO SULA {d.date || '______________________________'}</div>
-    <div className="receipt-sign"><Line />FIRMA DEL BENEFICIARIO<br /><span>{type === 'Compra' ? 'RTN' : 'DNI'}: <EditField ariaLabel={`${type === 'Compra' ? 'RTN' : 'DNI'} del beneficiario en hoja 2`} className="receipt-dni-input" value={identity} fallback={d.identity} onChange={onIdentityChange} /></span></div>
+    <div className="receipt-details">
+      <p className="receipt-purpose">{example ? d.purpose : chequeDescription}</p>
+      <div className="receipt-identifiers"><b>CHEQUE No. {number}</b><b>COMPROBANTE {d.receipt || '____________'}</b></div>
+      <div className="receipt-place">SAN PEDRO SULA {d.date || '______________________________'}</div>
+      <div className="receipt-sign"><Line />FIRMA DEL BENEFICIARIO<br /><span>{type === 'Compra' ? 'RTN' : 'DNI'}: <EditField ariaLabel={`${type === 'Compra' ? 'RTN' : 'DNI'} del beneficiario en hoja 2`} className="receipt-dni-input" value={identity} fallback={d.identity} onChange={onIdentityChange} /></span></div>
+    </div>
   </article>
 }
 
@@ -249,6 +267,8 @@ export function PageFour({ example, date, comprobante, identity, salary, level, 
 
 export function PageThree({ example, date, comprobante, beneficiary, identity, chequeDescription, position, salary, level, category, department, city, residence, itineraryRows, travelDays, travelStart, travelEnd, vehicleType, plate, driver, destinationHistory = [], driverHistory = [], plateHistory = [], zoneRates = {}, expenseRows, continuationStage, onItineraryRowsChange, onTravelDaysChange, onTravelStartChange, onTravelEndChange, onVehicleTypeChange, onPlateChange, onDriverChange, onExpenseRowsChange, onBeneficiaryChange, onIdentityChange, onChequeDescriptionChange, onPositionChange, onSalaryChange, onLevelChange, onCategoryChange, onDepartmentChange, onCityChange, onResidenceChange }) {
   const d = dataFor(example, 'Viatico', date, comprobante)
+  const pageRef = useRef(null)
+  const purposeRef = useRef(null)
   const v = (text, fallback = '') => example ? text : fallback
   const itineraryTotal = itineraryRows.reduce((sum, row) => sum + numeric(row.total), 0)
   const otherExpenses = expenseRows.filter(row => row.code.trim() !== '26210').reduce((sum, row) => sum + numeric(row.amount), 0)
@@ -276,9 +296,22 @@ export function PageThree({ example, date, comprobante, beneficiary, identity, c
       return changed ? next : current
     })
   }, [example, JSON.stringify(zoneRates), onItineraryRowsChange])
+  useLayoutEffect(() => {
+    const purpose = purposeRef.current
+    const page = pageRef.current
+    if (!purpose || !page) return
+    const updateHeight = () => {
+      const extraHeight = Math.max(0, Math.ceil(purpose.getBoundingClientRect().height - 63))
+      page.style.setProperty('--purpose-shift', `${extraHeight}px`)
+    }
+    updateHeight()
+    const observer = new ResizeObserver(updateHeight)
+    observer.observe(purpose)
+    return () => observer.disconnect()
+  }, [])
   const structure = [['MES/AÑO', v('sep-26', d.monthYear)], ['CÓDIGO', '60'], ['UNIDAD EJECUTORA', '33'], ['PROGRAMA Y SUBPROGRAMA', '19'], ['SUBPROGRAMA', '0'], ['ACTIVIDAD U OBRA', '0'], ['FUENTE', '12'], ['OBJETO', '26210']]
   const itineraryShift = Math.max(0, itineraryRows.length - 6) * 16
-  return <article className={`bond-page specimen-three overflow-stage-${continuationStage}`} style={{ '--itinerary-shift': `${itineraryShift}px` }} aria-label="Hoja 3: formulario de viáticos"><Logos />
+  return <article ref={pageRef} className={`bond-page specimen-three overflow-stage-${continuationStage}`} style={{ '--itinerary-shift': `${itineraryShift}px` }} aria-label="Hoja 3: formulario de viáticos"><Logos />
     <div className="travel-institution"><b>INSTITUCIÓN</b><Line>SECRETARIA DE SALUD</Line><b>UNIDAD EJECUTORA</b><Line className="blue-value">33</Line><b>GERENCIA ADMINISTRATIVA</b><span>14</span><b>NOMBRE DE LA UNIDAD</b><span>DEPARTAMENTAL DE CORTES</span></div>
     <div className="travel-identifiers"><b>VIATICO #</b><span>{v('404-2026', d.travelReceipt)}</span><b>FECHA:</b><span>{v('7-sep-26', d.shortDate)}</span></div>
     <section className="travel-personal"><b className="side-label">PERSONALES</b>
@@ -287,7 +320,7 @@ export function PageThree({ example, date, comprobante, beneficiary, identity, c
     </section>
     <p className="travel-instructions">Se le autoriza viajar <b><i>por la vía que indique el documento</i></b> y a incurrir en los gastos que sean necesarios dentro de los límites de su asignación y de acuerdo al reglamento en vigencia. Deberá rendir una cuenta detallada al terminar su misión a la Dirección general de Presupuesto de todos los gastos en el formulario e incluyendo los comprobantes de gasto.</p>
     <section className="travel-journey"><b className="side-label">DATOS DEL VIAJE</b>
-      <div className="journey-purpose"><b>PROPÓSITO DEL VIAJE:</b><p>{example ? d.purpose : chequeDescription}</p></div>
+      <div ref={purposeRef} className="journey-purpose"><b>PROPÓSITO DEL VIAJE:</b><p>{example ? d.purpose : chequeDescription}</p></div>
       <div className="journey-dates"><b>EMPEZANDO EL:</b><DatePickerField ariaLabel="Fecha de inicio del viaje" value={travelStart} fallback={v('8-sep-26')} onChange={onTravelStartChange} /><b>TERMINANDO EL:</b><DatePickerField ariaLabel="Fecha de finalización del viaje" value={travelEnd} fallback={v('8-sep-26')} onChange={onTravelEndChange} /><b>VÍA:</b><strong>TERRESTRE</strong><b>DÍAS:</b><strong className="green-value">{example ? '0.25' : <input className="journey-days-input" inputMode="decimal" value={travelDays} onChange={event => { const value = event.target.value; onTravelDaysChange(value); onItineraryRowsChange(itineraryRows.map((row, rowIndex) => rowIndex === 0 ? { ...row, days: value, total: numeric(row.assignment) * numeric(value) } : row)) }} onBlur={() => onTravelDaysChange(itineraryRows.map((row, index) => index === 0 ? { ...row, days: travelDays } : row).reduce((sum, row) => sum + numeric(row.days), 0).toString())} />}</strong><b>PERIODO:</b><strong>CORTO</strong></div>
       <div className="journey-vehicle"><b>¿EN QUE VEHÍCULO VIAJA?</b><select className="vehicle-type-input" aria-label="Tipo de vehículo" value={example ? 'Del Estado' : vehicleType} onChange={event => onVehicleTypeChange(event.target.value)}><option>Del Estado</option><option>Personal</option></select><i>INDIQUE EL NÚMERO DE PLACA</i>{example ? <Line>{v('GHA2109')}</Line> : <input className="vehicle-input" list="plate-history" aria-label="Número de placa" value={plate} onChange={event => onPlateChange(event.target.value.toUpperCase())} />}<i>INDIQUE EL NOMBRE DEL CONDUCTOR</i>{example ? <Line>{v('JOSE ROMERO')}</Line> : <input className="vehicle-input" list="driver-history" aria-label="Nombre del conductor" value={driver} onChange={event => onDriverChange(event.target.value.toUpperCase())} />}</div><datalist id="plate-history">{plateHistory.map(item => <option key={item} value={item} />)}</datalist><datalist id="driver-history">{driverHistory.map(item => <option key={item} value={item} />)}</datalist>
       <div className="journey-rates"><div>CATEGORÍA {category || '—'}</div><b>ZONA 1</b><b>ZONA 2</b><b>ZONA 3</b><span>ASIGNACIÓN QUE CORRESPONDE</span><strong>{zoneRates['1'] ? `L. ${currency(zoneRates['1'])}` : '—'}</strong><strong>{zoneRates['2'] ? `L. ${currency(zoneRates['2'])}` : '—'}</strong><strong>{zoneRates['3'] ? `L. ${currency(zoneRates['3'])}` : '—'}</strong></div>
