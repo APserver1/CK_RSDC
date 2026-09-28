@@ -23,7 +23,7 @@
 .bank-block h1{text-align:center;font:700 15px/19px Arial,sans-serif;padding-top:2px}
 .bank-block .sheet-logos{left:42px;right:122px;top:12px}
 .bank-block .sheet-logos img{width:266px;height:auto}
-.bank-number{position:absolute;top:8px;right:73px;font:700 11px 'Times New Roman',serif}
+.bank-number{position:absolute;top:8px;right:63px;font:700 16.5px 'Times New Roman',serif}
 .bank-date{position:absolute;left:2px;right:3px;top:79px;display:grid;grid-template-columns:265px 1fr;font-size:10.8px}
 .bank-payee,.bank-words{position:absolute;left:2px;right:145px;display:flex;align-items:baseline;white-space:nowrap;font-size:10.6px}
 .bank-payee{top:112px;right:8px}.bank-payee>b:last-child{flex:none;margin-left:4px}.bank-payee .dot-leader{flex:0 0 var(--payee-dot-width,88px);min-width:18px}.bank-words{top:132px;right:215px}
