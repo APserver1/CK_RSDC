@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import newLogo from '../../images/logo 2026.png'
 import { supabase } from '../lib/supabase'
 import { fetchAndCacheLookup } from '../lib/offlineStore'
+import { roundMoney, sumMoney } from '../lib/money'
 import { bundledIncomeCode } from '../data/incomeCodes'
 
 // Transcription of the supplied specimen, never submitted to Supabase.
@@ -87,7 +88,7 @@ export function PageOne({ number, type, example, date, comprobante, beneficiary,
   const travel = type === 'Viatico'
   const referenceRows = travel ? [{ code: '26210', description: 'VIATICOS NACIONALES', amount: '281.25' }, { code: '25100', description: 'SERVICIO DE TRANSPORTE', amount: '132.00' }] : [{ code: '', description: 'COMPRA DE BIENES Y/O SERVICIOS', amount: d.amount }]
   const rows = example ? referenceRows : expenseRows
-  const total = rows.reduce((sum, row) => sum + numeric(row.amount), 0)
+  const total = sumMoney(rows.map(row => row.amount))
   if (!example) {
     d.amount = formatAmount(total)
     d.words = amountInWords(total)
@@ -187,7 +188,7 @@ export function PageOne({ number, type, example, date, comprobante, beneficiary,
 export function PageTwo({ number, type, example, date, comprobante, identity, chequeDescription, expenseRows, onIdentityChange }) {
   const d = dataFor(example, type, date, comprobante)
   if (!example) {
-    const total = expenseRows.reduce((sum, row) => sum + numeric(row.amount), 0)
+    const total = sumMoney(expenseRows.map(row => row.amount))
     d.amount = formatAmount(total)
     d.words = amountInWords(total)
   }
@@ -222,7 +223,7 @@ function ItineraryTable({ example, rows, totalRows = rows, destinationHistory = 
       if (rowIndex !== actualIndex) return row
       const next = { ...row, [field]: value }
       if (field === 'zone') next.assignment = zoneRates[value] ? String(zoneRates[value]) : ''
-      next.total = numeric(next.assignment) * numeric(next.days)
+      next.total = roundMoney(numeric(next.assignment) * numeric(next.days))
       return next
     })
     onRowsChange(nextRows)
@@ -231,7 +232,7 @@ function ItineraryTable({ example, rows, totalRows = rows, destinationHistory = 
   const shownRows = example ? [{ number: '1', destination: 'Tegucigalpa', departure: '8-sep-26', returnDate: '8-sep-26', zone: '1', days: '0.25', assignment: '1125', total: '281.25' }, ...Array.from({ length: 8 }, () => ({}))] : rows
   return <><datalist id="destination-history">{destinationHistory.map(destination => <option key={destination} value={destination} />)}</datalist><table className="itinerary-table"><colgroup>{[3,26,11,11,11,8,15,15].map((w,i)=><col key={i} style={{width:`${w}%`}} />)}</colgroup><thead><tr>{['N','DESTINO','SALE','REGRESA','ZONA','DÍAS','ASIGNACIÓN','TOTAL'].map(s=><th key={s}>{s}</th>)}</tr></thead><tbody>
     {shownRows.map((row, index) => <tr key={index} onKeyDown={event => { if (!example && event.ctrlKey && (event.key.toLowerCase() === 'x' || event.key.toLowerCase() === 'z')) { event.preventDefault(); event.key.toLowerCase() === 'x' ? removeRow(index + offset) : addBefore(index + offset) } }}><td className="itinerary-number-cell">{!example && totalRows.length > 1 && <button className="row-remove itinerary-row-remove" type="button" aria-label={`Eliminar fila de itinerario ${index + offset + 1}`} onClick={() => removeRow(index + offset)}>-</button>}{example ? row.number || '' : <input className="itinerary-input" value={row.number || String(index + offset + 1)} onChange={event => update(index, 'number', event.target.value)} onKeyDown={event => event.key === 'Enter' && addRow(index + offset)} />}</td><td>{example ? row.destination || '' : <input className="itinerary-input" list="destination-history" value={row.destination || ''} onChange={event => update(index, 'destination', event.target.value)} onKeyDown={event => event.key === 'Enter' && addRow(index)} />}</td><td className="blue-value date-cell">{example ? row.departure || '' : <DatePickerField ariaLabel={`Fecha de salida ${index + offset + 1}`} value={row.departure || ''} onChange={value => update(index, 'departure', value)} fallback="" />}</td><td className="blue-value date-cell">{example ? row.returnDate || '' : <DatePickerField ariaLabel={`Fecha de regreso ${index + offset + 1}`} value={row.returnDate || ''} onChange={value => update(index, 'returnDate', value)} fallback="" />}</td><td className="blue-value">{example ? row.zone || '' : <input className="itinerary-input" inputMode="numeric" value={row.zone || ''} onChange={event => update(index, 'zone', event.target.value)} onKeyDown={event => event.key === 'Enter' && addRow(index)} />}</td><td>{example ? row.days || '' : <input className="itinerary-input" inputMode="decimal" value={row.days || ''} onChange={event => update(index, 'days', event.target.value)} onKeyDown={event => event.key === 'Enter' && addRow(index)} />}</td><td>{example ? `L.       ${currency(row.assignment)}` : <input className="itinerary-input money-input" value={`L. ${currency(row.assignment)}`} onChange={event => update(index, 'assignment', event.target.value.replace(/[^0-9.]/g, ''))} />}</td><td className="itinerary-total-cell">{example ? `L.       ${currency(row.total)}` : <input className="itinerary-input money-input" value={`L. ${currency(row.total)}`} readOnly />}{!example && <button className="row-add itinerary-row-add" type="button" aria-label={`Añadir fila de itinerario antes de ${index + offset + 1}`} onClick={() => addBefore(index + offset)}>+</button>}</td></tr>)}
-    </tbody><tfoot><tr><td>SUB</td><td>{example ? '1' : ''}</td><td>{example ? '1' : ''}</td><td>{example ? '1' : ''}</td><td>{example ? '1' : ''}</td><td>{example ? '0.25' : days || ''}</td><td></td><td>{example ? 'L.       281.25' : `L.       ${currency(totalRows.reduce((sum, row) => sum + numeric(row.total), 0))}`}</td></tr></tfoot></table></>
+    </tbody><tfoot><tr><td>SUB</td><td>{example ? '1' : ''}</td><td>{example ? '1' : ''}</td><td>{example ? '1' : ''}</td><td>{example ? '1' : ''}</td><td>{example ? '0.25' : days || ''}</td><td></td><td>{example ? 'L.       281.25' : `L.       ${currency(sumMoney(totalRows.map(row => row.total)))}`}</td></tr></tfoot></table></>
 }
 
 function TravelLowerBlocks({ example, d, identity, salary, level, structure, otherExpenses }) {
@@ -275,8 +276,8 @@ export function PageThree({ example, date, comprobante, beneficiary, identity, c
   const pageRef = useRef(null)
   const purposeRef = useRef(null)
   const v = (text, fallback = '') => example ? text : fallback
-  const itineraryTotal = itineraryRows.reduce((sum, row) => sum + numeric(row.total), 0)
-  const otherExpenses = expenseRows.filter(row => row.code.trim() !== '26210').reduce((sum, row) => sum + numeric(row.amount), 0)
+  const itineraryTotal = sumMoney(itineraryRows.map(row => row.total))
+  const otherExpenses = sumMoney(expenseRows.filter(row => row.code.trim() !== '26210').map(row => row.amount))
   if (!example) d.amount = currency(itineraryTotal + otherExpenses)
   useEffect(() => {
     if (example || !onExpenseRowsChange) return
@@ -293,7 +294,7 @@ export function PageThree({ example, date, comprobante, beneficiary, identity, c
       let changed = false
       const next = current.map(row => {
         const assignment = zoneRates[String(row.zone)] ? String(zoneRates[String(row.zone)]) : ''
-        const total = numeric(assignment) * numeric(row.days)
+        const total = roundMoney(numeric(assignment) * numeric(row.days))
         if (row.assignment === assignment && numeric(row.total) === total) return row
         changed = true
         return { ...row, assignment, total }
@@ -326,7 +327,7 @@ export function PageThree({ example, date, comprobante, beneficiary, identity, c
     <p className="travel-instructions">Se le autoriza viajar <b><i>por la vía que indique el documento</i></b> y a incurrir en los gastos que sean necesarios dentro de los límites de su asignación y de acuerdo al reglamento en vigencia. Deberá rendir una cuenta detallada al terminar su misión a la Dirección general de Presupuesto de todos los gastos en el formulario e incluyendo los comprobantes de gasto.</p>
     <section className="travel-journey"><b className="side-label">DATOS DEL VIAJE</b>
       <div ref={purposeRef} className="journey-purpose"><b>PROPÓSITO DEL VIAJE:</b><p>{example ? d.purpose : chequeDescription}</p></div>
-      <div className="journey-dates"><b>EMPEZANDO EL:</b><DatePickerField ariaLabel="Fecha de inicio del viaje" value={travelStart} fallback={v('8-sep-26')} onChange={onTravelStartChange} /><b>TERMINANDO EL:</b><DatePickerField ariaLabel="Fecha de finalización del viaje" value={travelEnd} fallback={v('8-sep-26')} onChange={onTravelEndChange} /><b>VÍA:</b><strong>TERRESTRE</strong><b>DÍAS:</b><strong className="green-value">{example ? '0.25' : <input className="journey-days-input" inputMode="decimal" value={travelDays} onChange={event => { const value = event.target.value; onTravelDaysChange(value); onItineraryRowsChange(itineraryRows.map((row, rowIndex) => rowIndex === 0 ? { ...row, days: value, total: numeric(row.assignment) * numeric(value) } : row)) }} onBlur={() => onTravelDaysChange(itineraryRows.map((row, index) => index === 0 ? { ...row, days: travelDays } : row).reduce((sum, row) => sum + numeric(row.days), 0).toString())} />}</strong><b>PERIODO:</b><strong>CORTO</strong></div>
+      <div className="journey-dates"><b>EMPEZANDO EL:</b><DatePickerField ariaLabel="Fecha de inicio del viaje" value={travelStart} fallback={v('8-sep-26')} onChange={onTravelStartChange} /><b>TERMINANDO EL:</b><DatePickerField ariaLabel="Fecha de finalización del viaje" value={travelEnd} fallback={v('8-sep-26')} onChange={onTravelEndChange} /><b>VÍA:</b><strong>TERRESTRE</strong><b>DÍAS:</b><strong className="green-value">{example ? '0.25' : <input className="journey-days-input" inputMode="decimal" value={travelDays} onChange={event => { const value = event.target.value; onTravelDaysChange(value); onItineraryRowsChange(itineraryRows.map((row, rowIndex) => rowIndex === 0 ? { ...row, days: value, total: roundMoney(numeric(row.assignment) * numeric(value)) } : row)) }} onBlur={() => onTravelDaysChange(itineraryRows.map((row, index) => index === 0 ? { ...row, days: travelDays } : row).reduce((sum, row) => sum + numeric(row.days), 0).toString())} />}</strong><b>PERIODO:</b><strong>CORTO</strong></div>
       <div className="journey-vehicle"><b>¿EN QUE VEHÍCULO VIAJA?</b><select className="vehicle-type-input" aria-label="Tipo de vehículo" value={example ? 'Del Estado' : vehicleType} onChange={event => onVehicleTypeChange(event.target.value)}><option>Del Estado</option><option>Personal</option></select><i>INDIQUE EL NÚMERO DE PLACA</i>{example ? <Line>{v('GHA2109')}</Line> : <input className="vehicle-input" list="plate-history" aria-label="Número de placa" value={plate} onChange={event => onPlateChange(event.target.value.toUpperCase())} />}<i>INDIQUE EL NOMBRE DEL CONDUCTOR</i>{example ? <Line>{v('JOSE ROMERO')}</Line> : <input className="vehicle-input" list="driver-history" aria-label="Nombre del conductor" value={driver} onChange={event => onDriverChange(event.target.value.toUpperCase())} />}</div><datalist id="plate-history">{plateHistory.map(item => <option key={item} value={item} />)}</datalist><datalist id="driver-history">{driverHistory.map(item => <option key={item} value={item} />)}</datalist>
       <div className="journey-rates"><div>CATEGORÍA {category || '—'}</div><b>ZONA 1</b><b>ZONA 2</b><b>ZONA 3</b><span>ASIGNACIÓN QUE CORRESPONDE</span><strong>{zoneRates['1'] ? `L. ${currency(zoneRates['1'])}` : '—'}</strong><strong>{zoneRates['2'] ? `L. ${currency(zoneRates['2'])}` : '—'}</strong><strong>{zoneRates['3'] ? `L. ${currency(zoneRates['3'])}` : '—'}</strong></div>
     </section>

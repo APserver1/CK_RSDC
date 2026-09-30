@@ -199,34 +199,29 @@
 .specimen-three:not(.continuation-page) .trip-bottom-rule{top:calc(730px + var(--itinerary-shift, 0px) + var(--purpose-shift, 0px))}
 .specimen-three:not(.continuation-page) .budget-structure{top:calc(747px + var(--itinerary-shift, 0px) + var(--purpose-shift, 0px))}
 .specimen-three:not(.continuation-page) .trip-receipt{top:calc(748px + var(--itinerary-shift, 0px) + var(--purpose-shift, 0px))}
-.specimen-three:not(.continuation-page) .travel-letterhead{top:calc(998px + var(--itinerary-shift, 0px));bottom:auto}
+.specimen-three:not(.continuation-page) .travel-letterhead{top:auto;bottom:14px}
 
-/* Move the lowest content to the continuation sheet first. */
-.specimen-three:not(.continuation-page).overflow-stage-1 .travel-letterhead,
-.specimen-three:not(.continuation-page).overflow-stage-2 .travel-letterhead,
-.specimen-three:not(.continuation-page).overflow-stage-3 .travel-letterhead,
-.specimen-three:not(.continuation-page).overflow-stage-4 .travel-letterhead{display:none}
+/* Move lower blocks only when they need the continuation sheet. */
+.specimen-three:not(.continuation-page).overflow-stage-1 .budget-structure,
+.specimen-three:not(.continuation-page).overflow-stage-1 .trip-receipt,
 .specimen-three:not(.continuation-page).overflow-stage-2 .budget-structure,
 .specimen-three:not(.continuation-page).overflow-stage-2 .trip-receipt,
 .specimen-three:not(.continuation-page).overflow-stage-3 .budget-structure,
-.specimen-three:not(.continuation-page).overflow-stage-3 .trip-receipt,
-.specimen-three:not(.continuation-page).overflow-stage-4 .budget-structure,
-.specimen-three:not(.continuation-page).overflow-stage-4 .trip-receipt{display:none}
+.specimen-three:not(.continuation-page).overflow-stage-3 .trip-receipt{display:none}
+.specimen-three:not(.continuation-page).overflow-stage-2 .trip-authorized,
+.specimen-three:not(.continuation-page).overflow-stage-2 .trip-approved,
+.specimen-three:not(.continuation-page).overflow-stage-2 .trip-bottom-rule,
 .specimen-three:not(.continuation-page).overflow-stage-3 .trip-authorized,
 .specimen-three:not(.continuation-page).overflow-stage-3 .trip-approved,
-.specimen-three:not(.continuation-page).overflow-stage-3 .trip-bottom-rule,
-.specimen-three:not(.continuation-page).overflow-stage-4 .trip-authorized,
-.specimen-three:not(.continuation-page).overflow-stage-4 .trip-approved,
-.specimen-three:not(.continuation-page).overflow-stage-4 .trip-bottom-rule{display:none}
-.specimen-three:not(.continuation-page).overflow-stage-4 .trip-totals{display:none}
+.specimen-three:not(.continuation-page).overflow-stage-3 .trip-bottom-rule{display:none}
+.specimen-three:not(.continuation-page).overflow-stage-3 .trip-totals{display:none}
 
 /* Continuation pages reuse the original blocks and their original typography. */
 .continuation-page .trip-totals,.continuation-page .trip-authorized,.continuation-page .trip-approved,.continuation-page .trip-bottom-rule,.continuation-page .budget-structure,.continuation-page .trip-receipt,.continuation-page .travel-letterhead{display:block}
 .continuation-page .trip-totals{display:grid}
 .continuation-page .itinerary-table{top:110px;left:62px;width:691px}
-.continuation-page.continuation-stage-1 .trip-totals,.continuation-page.continuation-stage-1 .trip-authorized,.continuation-page.continuation-stage-1 .trip-approved,.continuation-page.continuation-stage-1 .trip-bottom-rule,.continuation-page.continuation-stage-1 .budget-structure,.continuation-page.continuation-stage-1 .trip-receipt{display:none}
-.continuation-page.continuation-stage-2 .trip-totals,.continuation-page.continuation-stage-2 .trip-authorized,.continuation-page.continuation-stage-2 .trip-approved,.continuation-page.continuation-stage-2 .trip-bottom-rule{display:none}
-.continuation-page.continuation-stage-3 .trip-totals{display:none}
+.continuation-page.continuation-stage-1 .trip-totals,.continuation-page.continuation-stage-1 .trip-authorized,.continuation-page.continuation-stage-1 .trip-approved,.continuation-page.continuation-stage-1 .trip-bottom-rule{display:none}
+.continuation-page.continuation-stage-2 .trip-totals{display:none}
 .editor-toolbar>.save-area{display:flex;align-items:center;gap:10px;margin-left:auto}.save-button,.print-button{border:0;border-radius:8px;padding:10px 18px;color:#fff;font-weight:700;cursor:pointer}.save-button{background:#1f5d78}.print-button{background:#c79a57}.save-button:disabled{opacity:.65;cursor:wait}.save-area small{color:#667983;font-size:11px}.save-area .save-error{color:#a4433e}.salary-toggle{display:inline-flex;align-items:center;grid-template-columns:none;gap:6px;margin:0;color:#fff;font-size:10px;font-weight:700;white-space:nowrap;cursor:pointer}.salary-toggle input{width:28px;height:16px;margin:0;padding:0;appearance:none;border:1px solid #99a8c7;border-radius:999px;background:#526580;position:relative;cursor:pointer}.salary-toggle input::after{content:"";position:absolute;width:12px;height:12px;top:1px;left:1px;border-radius:50%;background:#fff;transition:left .15s ease}.salary-toggle input:checked{background:#7b2cbf;border-color:#7b2cbf}.salary-toggle input:checked::after{left:13px}.base-salary-category{display:inline-block;color:#7b2cbf;font:700 9px/14px Arial,sans-serif;white-space:nowrap;position:relative;top:-1px;text-align:center}
 .print-workspace{position:absolute;left:-10000px;top:0;width:816px;visibility:hidden;pointer-events:none}
 .cheque-description-input{min-height:82px;height:82px;overflow:hidden}
