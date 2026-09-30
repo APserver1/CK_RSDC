@@ -7,6 +7,8 @@ import { bundledIncomeCode } from '../data/incomeCodes'
 import { LOCAL_VIATICO_RATE_ROWS, LOCAL_VIATICO_RATE_TABLES } from '../data/viaticoRates'
 import './cheque-editor.css'
 
+const DEFAULT_TRAVEL_LOCATION = { department: 'CORTES', city: 'SAN PEDRO SULA', residence: 'SAN PEDRO SULA' }
+
 export default function ChequeEditor({ Layout }) {
   const navigate = useNavigate()
   const { id: editId } = useParams()
@@ -149,14 +151,20 @@ export default function ChequeEditor({ Layout }) {
     setSalary(person.salary || '')
     setLevel(person.level || '')
     setCategory(person.category || 'V')
-    setDepartment(person.department || '')
-    setCity(person.city || '')
-    setResidence(person.residence || '')
+    const locationFallback = setup.type === 'Viatico' ? DEFAULT_TRAVEL_LOCATION : { department: '', city: '', residence: '' }
+    setDepartment(person.department?.trim() || locationFallback.department)
+    setCity(person.city?.trim() || locationFallback.city)
+    setResidence(person.residence?.trim() || locationFallback.residence)
   }
   const start = event => {
     event.preventDefault()
     setPage(1)
     const source = recentCheques.find(item => item.id === inheritSourceId)
+    if (setup.type === 'Viatico') {
+      setDepartment(current => current || DEFAULT_TRAVEL_LOCATION.department)
+      setCity(current => current || DEFAULT_TRAVEL_LOCATION.city)
+      setResidence(current => current || DEFAULT_TRAVEL_LOCATION.residence)
+    }
     if (setup.type === 'Viatico' && inheritTravel && source) {
       try {
         const stored = JSON.parse(source.concepto || '{}')
