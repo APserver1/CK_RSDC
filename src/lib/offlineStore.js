@@ -72,11 +72,10 @@ export function getImmediateChequeSnapshot() {
 }
 
 export function getImmediateChequeSequences() {
-  return readLocalSnapshot(SEQUENCES_SNAPSHOT, { cheque: 0, comprobante: 0 })
+  return updateSequences(getImmediateChequeSnapshot())
 }
 
 function updateSequences(records) {
-  const previous = readLocalSnapshot(SEQUENCES_SNAPSHOT, { cheque: 0, comprobante: 0 })
   const next = records.reduce((result, item) => {
     result.cheque = Math.max(result.cheque, Number(String(item.numero_cheque || '').replace(/\D/g, '')) || 0)
     try {
@@ -84,7 +83,7 @@ function updateSequences(records) {
       result.comprobante = Math.max(result.comprobante, Number(item.comprobante || stored?.setup?.comprobante) || 0)
     } catch { result.comprobante = Math.max(result.comprobante, Number(item.comprobante) || 0) }
     return result
-  }, { ...previous })
+  }, { cheque: 0, comprobante: 0 })
   writeLocalSnapshot(SEQUENCES_SNAPSHOT, next)
   return next
 }
