@@ -6,6 +6,11 @@
 .reference-toggle input{accent-color:#173c37}
 .bond-page{--rule:#444;--blue:#527b99;--green:#558573;position:relative;box-sizing:border-box;flex:none;width:816px;min-width:816px;height:1056px;padding:0;background:#fff;color:#222;box-shadow:0 12px 38px #17363324;font:11px/1.3 Arial,sans-serif;overflow:hidden;print-color-adjust:exact;-webkit-print-color-adjust:exact}
 .bond-page *{box-sizing:border-box}
+.bond-page::after{content:"";position:absolute;top:18px;right:68px;width:64px;height:64px;background:url('../../images/logo_derecho.png') center/contain no-repeat;pointer-events:none}
+.specimen-one::after{top:119px}
+.specimen-two::after{top:75px}
+.specimen-three::after,.commitment-page::after{top:62px}
+.specimen-three:not(.continuation-page)::after{right:220px}
 .bond-page p,.bond-page h1,.bond-page h2,.bond-page h3{margin:0}
 .bond-page b,.bond-page strong{font-weight:700}
 .bond-page table{border-collapse:collapse;table-layout:fixed;width:100%;font:inherit;color:inherit}
@@ -232,3 +237,12 @@
   .print-workspace .cheque-description-input{display:none}
   .print-workspace .cheque-description-print{display:block;white-space:pre-wrap;overflow-wrap:anywhere;font:700 11.4px/14.7px Arial,sans-serif;text-align:justify}
 }
+.commitment-page{font-family:Arial,sans-serif;color:#111}
+.commitment-page .sheet-logos{top:42px;left:92px;right:93px}
+.commitment-page .sheet-logos img{width:237px;height:auto}
+.commitment-page h2{position:absolute;top:145px;left:65px;right:65px;text-align:center;font-size:20px}
+.commitment-body{position:absolute;top:225px;left:72px;right:72px;font-size:15px;line-height:1.85;text-align:justify}
+.commitment-body p{margin:0 0 12px}
+.commitment-fill{display:inline-block;min-width:85px;border-bottom:1px solid #333;color:#1769aa;font-weight:700;line-height:1.4;overflow-wrap:anywhere}
+.commitment-signature{position:absolute;bottom:170px;left:250px;right:250px;text-align:center;font-size:18px;font-weight:700}
+.commitment-signature span{display:block;border-top:1px solid #333;margin-bottom:25px}
