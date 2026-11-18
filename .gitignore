@@ -1,4 +1,7 @@
 node_modules
 dist
+src-tauri/target
+.desktop-actions.local.cjs
+desktop-release/
 .env.local
 .env.*.local

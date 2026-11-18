@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Cheques RSDC",
+  "version": "0.1.0",
+  "identifier": "hn.rsdc.cheques",
+  "build": {
+    "beforeDevCommand": "npm run dev -- --host 127.0.0.1 --port 1420 --strictPort",
+    "devUrl": "http://127.0.0.1:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [{ "title": "Cheques RSDC", "width": 1200, "height": 850, "minWidth": 900, "minHeight": 650 }],
+    "security": { "csp": null }
+  },
+  "bundle": {
+    "active": true,
+    "icon": ["icons/icon.ico"],
+    "targets": ["nsis"],
+    "windows": { "webviewInstallMode": { "type": "offlineInstaller" } }
+  }
+}
